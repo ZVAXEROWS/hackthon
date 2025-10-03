@@ -5,7 +5,7 @@ function createGifBackground() {
     const gifImg = document.createElement('img');
     gifImg.id = 'gifBg';
     gifImg.alt = 'Animated Background';
-    gifImg.src = 'videoplayback.gif'; // Local path - replace with online URL for testing, e.g., 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif'
+    gifImg.src = '../assets/videoplayback.gif'; // Local path - replace with online URL for testing, e.g., 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif'
     gifImg.loading = 'eager'; // Load immediately
 
     // Event Listeners
@@ -80,7 +80,7 @@ function toggleMap() {
         return;
     }
     if (mapContainer.style.display === 'none' || mapContainer.style.display === '') {
-        const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(city)}&key=YOUR_GOOGLE_MAPS_KEY`;
+        const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(city)}&key=AIzaSyBrO3PyudT-B8Szv3yvl3vOUwNxbwiEvMQ`;
         mapIframe.src = mapUrl;
         mapContainer.style.display = 'block';
         mapBtn.textContent = '🗺️ Hide Map';
@@ -93,7 +93,7 @@ function toggleMap() {
 
 // Fetch Weather by Coords (Placeholder)
 function fetchWeatherByCoords(lat, lon) {
-    const apiKey = 'YOUR_API_KEY';
+    const apiKey = 'AIzaSyBrO3PyudT-B8Szv3yvl3vOUwNxbwiEvMQ';
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     fetch(url)
         .then(response => response.json())

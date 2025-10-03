@@ -5,9 +5,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Scales GIF to cover screen without distortion */
-    z-index: -1;
-    pointer-events: none; /* Allows clicks through to content */
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* Body Fallback: Animated Gradient (Shows if GIF Fails) */
@@ -147,6 +147,7 @@ button:hover {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: none;
 }
 
 /* Responsive */

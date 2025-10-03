@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyWatch - Weather Checker</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
     <!-- GIF Background will be added dynamically via JS -->
@@ -27,8 +27,9 @@
         <div id="forecast"></div>
         
         <!-- Map Iframe (Hidden by Default) -->
-        <div id="mapContainer" style="display: none;">
+        <div id="mapContainer">
             <iframe 
+                src="map.html"
                 id="mapIframe" 
                 width="100%" 
                 height="400" 
@@ -48,6 +49,6 @@
         </div>
     </section>
 
-    <script src="scripts/page1.js"></script>
+    <script src="../scripts/page1.js"></script>
 </body>
 </html>

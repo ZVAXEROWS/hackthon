@@ -192,7 +192,6 @@ async function saveData (long, lat){
         if(!response.ok){
             throw new Error(`HTTP error!: ${response.status}`)
         }
-        console.log('resopnse is ok');
         saveCache(urlWithParams, response);
         logCache();
         
