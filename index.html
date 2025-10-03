@@ -1,22 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <title>Leaflet Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اختر مكان من الخريطة</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; direction: rtl; }
+    #map { height: 70vh; width: 100%; }
+    .panel { padding: 12px; }
+    .coords { margin-top: 8px; }
+    button { padding: 8px 12px; }
+  </style>
 </head>
 <body>
-  <div id="map" style="height: 500px;"></div>
+  <div class="panel">
+    <h2>اختار مكان من الخريطة (انقر)</h2>
+    <p>انقر في أي نقطة على الخريطة ليظهر الموقع وإحداثياته. سيتم إجراء بحث عكسي (reverse geocode) لإحضار العنوان.</p>
+    <div id="info">
+      <div class="coords"><strong>الإحداثيات:</strong> <span id="latlng">-</span></div>
+      <div class="coords"><strong>العنوان (ان كان متوافر):</strong> <span id="address">-</span></div>
+      <div style="margin-top:8px;">
+        <button id="sendBtn" disabled>إرسال الموقع للسيرفر</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    var map = L.map('map').setView([30.0444, 31.2357], 13);
+    // إنشاء الخريطة
+    const map = L.map('map').setView([30.0444, 31.2357], 12); // مركز الافتراضي: القاهرة
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    L.marker([30.0444, 31.2357]).addTo(map)
-      .bindPopup('Hello Cairo!')
-      .openPopup();
+    let marker = null;
+    const latlngEl = document.getElementById('latlng');
+    const addressEl = document.getElementById('address');
+    const sendBtn = document.getElementById('sendBtn');
+
+    async function reverseGeocode(lat, lon) {
+      // استخدم Nominatim (احترم سياسات الاستخدام)
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&accept-language=ar`;
+      try {
+        const res = await fetch(url, {
+          headers: { 'User-Agent': 'MyLeafletApp/1.0 (your.email@example.com)' } // ضع بريدك لو للاستعمال الجاد
+        });
+        if (!res.ok) throw new Error('خطأ في جلب العنوان');
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        console.error(err);
+        return null;
+      }
+    }
+
+    map.on('click', async (e) => {
+      const { lat, lng } = e.latlng;
+      // وضع/نقل الماركر
+      if (marker) marker.setLatLng([lat, lng]);
+      else marker = L.marker([lat, lng]).addTo(map);
+
+      latlngEl.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      addressEl.textContent = 'جاري جلب العنوان...';
+      sendBtn.disabled = true;
+
+      const rev = await reverseGeocode(lat, lng);
+      if (rev && rev.display_name) {
+        addressEl.textContent = rev.display_name;
+        marker.bindPopup(`<b>الإحداثيات:</b><br>${lat.toFixed(6)}, ${lng.toFixed(6)}<br><b>العنوان:</b><br>${rev.display_name}`).openPopup();
+      } else {
+        addressEl.textContent = 'العنوان غير متوفر';
+        marker.bindPopup(`${lat.toFixed(6)}, ${lng.toFixed(6)}`).openPopup();
+      }
+
+      // تفعيل زر الإرسال وحفظ البيانات المطلوبة في dataset
+      sendBtn.dataset.lat = lat;
+      sendBtn.dataset.lng = lng;
+      sendBtn.dataset.address = rev && rev.display_name ? rev.display_name : '';
+      sendBtn.disabled = false;
+    });
+
+    sendBtn.addEventListener('click', async () => {
+      const lat = sendBtn.dataset.lat;
+      const lng = sendBtn.dataset.lng;
+      const address = sendBtn.dataset.address;
+
+      // مثال إرسال للسيرفر (Express) — عدّل URL حسب حاجتك
+      try {
+        const res = await fetch('/save-location', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lat: parseFloat(lat), lng: parseFloat(lng), address })
+        });
+        if (!res.ok) throw new Error('فشل الإرسال');
+        const json = await res.json();
+        alert('تم الإرسال بنجاح: ' + JSON.stringify(json));
+      } catch (err) {
+        console.error(err);
+        alert('حصل خطأ أثناء الإرسال: ' + err.message);
+      }
+    });
   </script>
 </body>
 </html>
+
