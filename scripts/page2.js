@@ -12,4 +12,3 @@ function changeBackground(weatherCondition) {
 
   document.body.style.backgroundImage = weatherGifs[weatherCondition] || weatherGifs['default'];
 }
-

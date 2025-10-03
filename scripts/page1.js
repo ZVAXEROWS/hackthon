@@ -1,3 +1,4 @@
+
 // GIF Background Creation Using HTML/CSS/JS
 function createGifBackground() {
     // Create img element
@@ -106,3 +107,4 @@ function fetchWeatherByCoords(lat, lon) {
             weatherInfo.innerHTML = '<p>Error fetching weather. Check console.</p>';
         });
 }
+
