@@ -45,7 +45,7 @@ def classify_weather(row):
         return "warm"
     if t > 5:
         return "cold"
-    return "too cold"
+
 
 
 df["WeatherStatus"] = df.apply(classify_weather, axis=1)
