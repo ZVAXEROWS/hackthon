@@ -1,0 +1,166 @@
+/* GIF Background Styling (Applied to Dynamically Added Img) */
+#gifBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scales GIF to cover screen without distortion */
+    z-index: -1;
+    pointer-events: none; /* Allows clicks through to content */
+}
+
+/* Body Fallback: Animated Gradient (Shows if GIF Fails) */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    position: relative;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Animated Clouds Overlay (Optional, Works with GIF) */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath fill='%23fff' opacity='0.3' d='M0 10 Q10 0 20 10 T40 10 T60 0 T80 10 T100 10 V20 H0 Z'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath fill='%23fff' opacity='0.2' d='M20 15 Q30 5 40 15 T60 15 T80 5 T100 15 V20 H20 Z'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 200px 20px, 150px 15px;
+    background-position: 0 20px, 50px 30px;
+    animation: cloudsFloat 60s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes cloudsFloat {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-200px); }
+}
+
+/* Container for Main Content (Overlay for Readability) */
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    margin-top: 50px;
+    backdrop-filter: blur(5px);
+}
+
+h1 {
+    font-size: 3em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+input, button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="date"] {
+    color: #000;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+#mapBtn {
+    background: #28a745;
+    width: auto;
+    padding: 10px 20px;
+}
+
+#mapBtn:hover {
+    background: #218838;
+}
+
+#weatherInfo, #forecast {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    backdrop-filter: blur(2px);
+}
+
+/* About Us Section */
+.about-section {
+    padding: 50px 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: 50px;
+}
+
+.about-badge {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: 2px solid #007bff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.about-badge h2 {
+    color: #007bff;
+    text-shadow: none;
+}
+
+/* Map Container */
+#mapContainer {
+    margin: 20px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        margin-top: 20px;
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    input, button {
+        width: 90%;
+    }
+}

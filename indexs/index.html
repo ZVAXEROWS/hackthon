@@ -3,24 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>weather checker</title>
-    <link rel="stylesheet" href="styles\style.css">
-    <style> body { height: 100vh; margin: 0; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; } </style>
+    <title>SkyWatch - Weather Checker</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+    <!-- GIF Background will be added dynamically via JS -->
+
     <div class="container">
-        </video>
         <h1>SkyWatch</h1>
-        <input type="text" id="cityInput" placeholder="enter city name...." />
-        <input type="text" id="dateInput" placeholder="enter a date...." />
-        <button onclick="getWeather()">view</button>
-        <button onclick="getLocationWeather()">use ur location</button>
+        
+        <!-- Inputs -->
+        <input type="text" id="cityInput" placeholder="Enter city name...." />
+        <input type="date" id="dateInput" placeholder="Enter a date...." />
+        
+        <!-- Buttons -->
+        <button onclick="getWeather()">View</button>
+        <button onclick="getLocationWeather()">Use Your Location</button>
+        <button id="mapBtn" onclick="toggleMap()">🗺️ Map</button>
+        
+        <!-- Weather Display -->
         <h2 id="cityName"></h2>
         <div id="weatherInfo"></div>
         <div id="forecast"></div>
+        
+        <!-- Map Iframe (Hidden by Default) -->
+        <div id="mapContainer" style="display: none;">
+            <iframe 
+                id="mapIframe" 
+                width="100%" 
+                height="400" 
+                frameborder="0" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
     </div>
-    <script src="scripts\page1.js"></script>
 
-</div>
+    <!-- About Us Section (Scroll Down to See) -->
+    <section id="aboutUs" class="about-section">
+        <div class="about-badge">
+            <h2>About Us</h2>
+            <p>SkyWatch is your go-to app for real-time weather updates and forecasts. Built with love for weather enthusiasts!</p>
+        </div>
+    </section>
+
+    <script src="scripts/page1.js"></script>
 </body>
 </html>
