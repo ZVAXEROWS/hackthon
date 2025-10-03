@@ -14,7 +14,7 @@ async function saveData (long, lat){
         'parameters':'ALLSKY_SFC_SW_DWN,PS,RH2M,T2M_MAX,T2M_MIN,WS2M,WS50M',
         'format':'csv',
         'units':'metric',
-        'header':true,
+        'header':false,
         'time-standard':'utc'
     }
 
@@ -33,18 +33,36 @@ async function saveData (long, lat){
             throw new Error(`HTTP error!: ${response.status}`)
         }
         console.log('resopnse is ok');
-
-        const cache = await caches.open("nasa-cache");
-        await cache.put(urlWithParams, response.clone());
+        saveCache(urlWithParams, response);
+        logCache();
         
     } catch(e){
         
     }
 }
 
-async function loadCache(){
-    // for later usage
-    const cachedResponse = await cache.match(urlWithParams);
+async function saveCache(url, response){
+    const cache = await caches.open("nasa-cache");
+    await cache.put(url, response.clone());
+}
+
+async function logCache() {
+    const cache = await caches.open("nasa-cache");
+    const requests = await cache.keys();
+
+    for (const request of requests) {
+        console.log("Cached request URL:", request.url);
+
+        const response = await cache.match(request);
+        if (response) {
+            const text = await response.text();
+            console.log("Cached response content:", text.substring(0, 2000) + "...");
+        }
+    }
+}
+
+async function loadCache(url){
+    const cachedResponse = await cache.match(url);
     if (cachedResponse) {
         const csv = await cachedResponse.text();
         console.log("Loaded cached CSV:", csv);
